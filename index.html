@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>haha</title>
+    <!-- Tải Tailwind CSS để tạo kiểu dáng hiện đại và phản hồi nhanh -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Cấu hình Tailwind cho font Inter và màu sắc -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Định nghĩa lại màu sắc cho giao diện mới
+                        'primary-dark': '#4338ca', // Indigo 700
+                        'primary-light': '#6366f1', // Indigo 500
+                        'secondary-dark': '#059669', // Emerald 600
+                        'secondary-light': '#10b981', // Emerald 500
+                        'background': '#eef2ff', // Màu nền nhạt nhẹ nhàng
+                        'card-bg': '#ffffff',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Kiểu dáng cho các trường kết quả */
+        .result-field {
+            border-left-width: 4px;
+            transition: all 0.2s ease-in-out;
+            cursor: default;
+        }
+    </style>
+</head>
+<body class="bg-background font-sans">
+    <!-- Khung chứa chính: Chia 3 cột trên màn hình lớn (lg:grid-cols-3) -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 min-h-screen">
+        
+        <!-- Cột TRÁI: Generator (Chiếm 1/3 màn hình trên thiết bị lớn) -->
+        <div class="lg:col-span-1 flex items-center justify-center p-4 lg:p-8">
+            <div class="w-full max-w-md bg-card-bg p-8 rounded-3xl shadow-xl border border-gray-200">
+                <!-- Tiêu đề -->
+                <h1 class="text-3xl font-extrabold text-gray-800 text-center mb-2">
+                    <span class="text-primary-dark">G</span>enerator
+                </h1>
+                <p class="text-sm text-gray-500 text-center mb-8">Tên & Mật khẩu ngẫu nhiên an toàn</p>
+
+                <!-- Khu vực Hiển thị Kết quả -->
+                <div class="space-y-5 mb-8">
+                    <!-- Họ -->
+                    <div class="result-field border-primary-light bg-indigo-50/50 p-4 rounded-xl flex items-center justify-between shadow-lg">
+                        <label class="font-medium text-gray-700">Họ (Last Name):</label>
+                        <div class="flex items-center">
+                            <span id="ho_ngau_nhien" class="text-lg font-bold text-primary-dark mr-3 truncate">...</span>
+                            <button onclick="saoChep('ho_ngau_nhien', 'Họ')" class="bg-secondary-light hover:bg-secondary-dark text-white text-xs font-semibold py-1 px-3 rounded-md transition duration-150 shadow-md" title="Sao chép Họ">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Tên -->
+                    <div class="result-field border-primary-light bg-indigo-50/50 p-4 rounded-xl flex items-center justify-between shadow-lg">
+                        <label class="font-medium text-gray-700">Tên (First Name):</label>
+                        <div class="flex items-center">
+                            <span id="ten_ngau_nhien" class="text-lg font-bold text-primary-dark mr-3 truncate">...</span>
+                            <button onclick="saoChep('ten_ngau_nhien', 'Tên')" class="bg-secondary-light hover:bg-secondary-dark text-white text-xs font-semibold py-1 px-3 rounded-md transition duration-150 shadow-md" title="Sao chép Tên">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Mật Khẩu -->
+                    <div class="result-field border-secondary-light bg-green-50/50 p-4 rounded-xl flex items-center justify-between shadow-lg">
+                        <label class="font-medium text-gray-700">Mật Khẩu (6 Ký tự):</label>
+                        <div class="flex items-center">
+                            <span id="mat_khau_ngau_nhien" class="text-lg font-mono font-bold text-secondary-dark mr-3 break-all">...</span>
+                            <!-- Nút Sao chép Mật khẩu -->
+                            <button onclick="saoChep('mat_khau_ngau_nhien', 'Mật khẩu')" class="bg-secondary-light hover:bg-secondary-dark text-white text-xs font-semibold py-1 px-3 rounded-md transition duration-150 shadow-md" title="Sao chép mật khẩu">
+                                Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nút Tạo Ngẫu Nhiên Mới (Màu xanh lá) -->
+                <button 
+                    onclick="taoNgauNhien()" 
+                    class="w-full text-white font-semibold py-3 px-4 rounded-xl shadow-lg bg-secondary-light hover:bg-secondary-dark transition duration-150"
+                >
+                    <span id="button_text">Tạo Ngẫu Nhiên Mới</span>
+                </button>
+                
+                <!-- Hộp thông báo (thay thế alert) -->
+                <div id="thong_bao" class="mt-5 p-3 bg-yellow-100 text-yellow-800 rounded-lg text-sm hidden border border-yellow-300" role="alert">
+                    <span id="thong_bao_noi_dung"></span>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Cột PHẢI: Iframe 10 Phút Mail (Chiếm 2/3 màn hình trên thiết bị lớn) -->
+        <div class="lg:col-span-2 bg-gray-100 p-4 lg:p-8 flex flex-col">
+            <iframe 
+                src="https://mail10p.com/" 
+                class="flex-grow w-full rounded-xl shadow-xl border-2 border-primary-light" 
+                style="min-height: 400px; height: 100%;" 
+                title="Hộp thư điện tử 10 phút"
+            ></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Danh sách Họ phổ biến của Mỹ (Đã mở rộng)
+        const ho = [
+            "Smith", "Johnson", "Williams", "Brown", "Jones", "Garcia", "Miller", "Davis", "Rodriguez", "Martinez", 
+            "Hernandez", "Lopez", "Gonzalez", "Wilson", "Anderson", "Thomas", "Taylor", "Moore", "Jackson", "Martin",
+            "Lee", "Perez", "Thompson", "White", "Harris", "Sanchez", "Clark", "Ramirez", "Lewis", "Robinson",
+            "Walker", "Young", "Allen", "King", "Wright", "Scott", "Torres", "Nguyen", "Hill", "Flores",
+            "Green", "Adams", "Nelson", "Baker", "Hall", "Rivera", "Campbell", "Mitchell", "Carter", "Roberts"
+        ];
+
+        // Danh sách Tên phổ biến của Mỹ (Đã mở rộng)
+        const ten = [
+            "Emma", "Liam", "Olivia", "Noah", "Ava", "Elijah", "Isabella", "Oliver", "Sophia", "Lucas",
+            "Mia", "Ethan", "Charlotte", "Mason", "Amelia", "Logan", "Harper", "James", "Evelyn", "Benjamin",
+            "Abigail", "Jacob", "Emily", "Michael", "Madison", "Alexander", "Avery", "William", "Ella", "Daniel",
+            "Scarlett", "Henry", "Grace", "Jackson", "Chloe", "Samuel", "Lily", "Joseph", "Sofia", "Gabriel",
+            "Aurora", "Leo", "Luna", "Owen", "Stella", "Wyatt", "Zoe", "Julian", "Hannah", "Ryan"
+        ];
+
+        /**
+         * Hàm lấy một phần tử ngẫu nhiên từ một mảng
+         * @param {Array<string>} mang - Mảng chứa các chuỗi
+         * @returns {string} Phần tử được chọn ngẫu nhiên
+         */
+        function layNgauNhien(mang) {
+            const index = Math.floor(Math.random() * mang.length);
+            return mang[index];
+        }
+
+        /**
+         * Hàm tạo mật khẩu mạnh ngẫu nhiên
+         * Mật khẩu có độ dài 6 ký tự. Phải đảm bảo có ít nhất 1 chữ hoa, 1 số, 1 ký tự đặc biệt.
+         * @param {number} do_dai - Độ dài mật khẩu mong muốn (Mặc định là 6)
+         * @returns {string} Mật khẩu ngẫu nhiên
+         */
+        function taoMatKhau(do_dai = 6) { 
+            const lower = 'abcdefghijklmnopqrstuvwxyz';
+            const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const number = '0123456789';
+            const symbol = '!@#$%^&*()_+=-';
+            const all = lower + upper + number + symbol;
+            
+            let password_array = [];
+            
+            // 1. Đảm bảo mật khẩu có ít nhất 1 ký tự của mỗi loại
+            // Ký tự bắt buộc (3 ký tự)
+            password_array.push(layNgauNhien(upper.split(''))); // Chữ hoa
+            password_array.push(layNgauNhien(number.split(''))); // Số
+            password_array.push(layNgauNhien(symbol.split(''))); // Ký tự đặc biệt
+            
+            // 2. Điền vào các vị trí còn lại (do_dai - 3) bằng các ký tự ngẫu nhiên từ tập hợp "all"
+            const remaining_length = do_dai - password_array.length;
+            for (let i = 0; i < remaining_length; i++) {
+                password_array.push(layNgauNhien(all.split('')));
+            }
+
+            // 3. Xáo trộn mảng ký tự để vị trí các ký tự bắt buộc là ngẫu nhiên
+            const final_password_array = password_array.sort(() => 0.5 - Math.random());
+
+            // 4. Chuyển mảng thành chuỗi mật khẩu cuối cùng
+            return final_password_array.join('');
+        }
+
+        /**
+         * Hàm hiển thị thông báo thay thế cho alert()
+         * @param {string} message - Nội dung thông báo
+         * @param {string} type - Loại thông báo (e.g., 'success', 'error', 'warning')
+         */
+        function hienThiThongBao(message, type = 'warning') {
+            const alertBox = document.getElementById('thong_bao');
+            const content = document.getElementById('thong_bao_noi_dung');
+            
+            // Xóa các class màu cũ
+            alertBox.classList.remove('bg-green-100', 'text-green-800', 'bg-red-100', 'text-red-800', 'bg-yellow-100', 'text-yellow-800', 'border-green-300', 'border-red-300', 'border-yellow-300');
+            
+            // Thiết lập màu sắc dựa trên loại
+            if (type === 'success') {
+                alertBox.classList.add('bg-green-100', 'text-green-800', 'border-green-300');
+            } else if (type === 'error') {
+                alertBox.classList.add('bg-red-100', 'text-red-800', 'border-red-300');
+            } else { // default to warning
+                alertBox.classList.add('bg-yellow-100', 'text-yellow-800', 'border-yellow-300');
+            }
+
+            content.textContent = message;
+            alertBox.classList.remove('hidden');
+
+            // Ẩn thông báo sau 3 giây
+            setTimeout(() => {
+                alertBox.classList.add('hidden');
+            }, 3000);
+        }
+        
+        /**
+         * Hàm chính để tạo và hiển thị kết quả
+         */
+        function taoNgauNhien() {
+            try {
+                // 1. Lấy Họ và Tên ngẫu nhiên
+                const ho_random = layNgauNhien(ho);
+                const ten_random = layNgauNhien(ten);
+                
+                // 2. Tạo Mật khẩu ngẫu nhiên (Độ dài cố định là 6)
+                const mat_khau_random = taoMatKhau(6);
+
+                // 3. Hiển thị kết quả lên trang HTML
+                document.getElementById('ho_ngau_nhien').textContent = ho_random;
+                document.getElementById('ten_ngau_nhien').textContent = ten_random;
+                document.getElementById('mat_khau_ngau_nhien').textContent = mat_khau_random;
+
+                hienThiThongBao("Đã tạo dữ liệu ngẫu nhiên mới thành công!", 'success');
+            } catch (error) {
+                console.error("Lỗi khi tạo ngẫu nhiên:", error);
+                hienThiThongBao("Đã xảy ra lỗi trong quá trình tạo dữ liệu.", 'error');
+            }
+        }
+
+        /**
+         * Sao chép nội dung từ một ID nhất định vào clipboard
+         * @param {string} elementId - ID của phần tử chứa nội dung cần sao chép
+         * @param {string} typeName - Tên loại dữ liệu (ví dụ: 'Họ', 'Mật khẩu') để hiển thị trong thông báo
+         */
+        function saoChep(elementId, typeName) {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            
+            const content = element.textContent;
+            
+            // Sử dụng document.execCommand('copy') vì navigator.clipboard có thể không hoạt động trong môi trường iframe
+            const tempInput = document.createElement('textarea');
+            tempInput.value = content;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            
+            let success = false;
+            try {
+                success = document.execCommand('copy');
+                if (success) {
+                    hienThiThongBao(`Đã sao chép ${typeName} vào bộ nhớ tạm!`, 'success');
+                } else {
+                    throw new Error('Sao chép thất bại.');
+                }
+            } catch (err) {
+                console.error('Không thể sao chép: ', err);
+                hienThiThongBao("Không thể sao chép. Vui lòng sao chép thủ công.", 'error');
+            }
+            
+            document.body.removeChild(tempInput);
+        }
+        
+        // Chạy lần đầu tiên khi tải trang
+        window.onload = taoNgauNhien;
+    </script>
+
+</body>
+</html>
